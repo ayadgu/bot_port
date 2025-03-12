@@ -1,0 +1,453 @@
+[
+  {
+    "question": "Complete the sentence: Eu ___ estudando português há dois meses.",
+    "options": ["estou", "sou", "tenho", "faço"],
+    "correct": "estou",
+    "explanation": "The verb 'estar' is used to form the present continuous tense in Portuguese."
+  },
+  {
+    "question": "Which is the correct translation of 'I would like to go to the beach'?",
+    "options": [
+      "Eu quero ir à praia",
+      "Eu gostaria de ir à praia",
+      "Eu vou à praia",
+      "Eu fui à praia"
+    ],
+    "correct": "Eu gostaria de ir à praia",
+    "explanation": "'Gostaria' is the conditional form of 'gostar' which expresses 'would like'."
+  },
+  {
+    "question": "Choose the correct plural form of 'o hotel':",
+    "options": ["os hotéis", "os hoteles", "os hotelis", "os hotel"],
+    "correct": "os hotéis",
+    "explanation": "Words ending in 'l' typically form plurals by replacing 'l' with 'is'."
+  },
+  {
+    "question": "Which is the correct form? livro ___ história",
+    "options": ["para", "por", "de", "em"],
+    "correct": "de",
+    "explanation": "The correct preposition for 'livro ___ história' is 'de'."
+  },
+  {
+    "question": "Choose the correct translation for 'night':",
+    "options": ["livro", "dia", "água", "noite"],
+    "correct": "noite",
+    "explanation": "The Portuguese word for 'night' is 'noite'."
+  },
+  {
+    "question": "What is the Portuguese word for 'car'?",
+    "options": ["água", "cidade", "carro", "dia"],
+    "correct": "carro",
+    "explanation": "The Portuguese word for 'car' is 'carro'."
+  },
+  {
+    "question": "Choose the correct translation for 'car':",
+    "options": ["comida", "amigo/amiga", "tempo", "carro"],
+    "correct": "carro",
+    "explanation": "The Portuguese word for 'car' is 'carro'."
+  },
+  {
+    "question": "Which is the correct form? frio",
+    "options": ["ser", "estar"],
+    "correct": "ser",
+    "explanation": "For 'frio', we use 'ser' because it refers to a permanent quality or characteristic."
+  },
+  {
+    "question": "What is the Portuguese word for 'devilishly'?",
+    "options": ["diabolicamente", "palavra", "coisa", "tempo"],
+    "correct": "diabolicamente",
+    "explanation": "'Devilishly' means 'diabolicamente' in Portuguese. Definition: In a devilish manner."
+  },
+  {
+    "question": "What is the Portuguese word for 'caestuses'?",
+    "options": ["armas romanas", "objeto", "palavra", "lugar"],
+    "correct": "armas romanas",
+    "explanation": "'Caestuses' refers to a type of Roman weapon, usually worn on the hand. Definition: A type of weapon used by ancient Romans."
+  },
+  {
+    "question": "What is the Portuguese word for 'adjutant'?",
+    "options": ["ajudante", "coisa", "palavra", "pessoa"],
+    "correct": "ajudante",
+    "explanation": "'Adjutant' means 'ajudante' in Portuguese. Definition: A lower-ranking officer who assists a higher-ranking officer with administrative affairs."
+  },
+  {
+    "question": "What is the Portuguese word for 'malignancies'?",
+    "options": ["neoplasias", "palavra", "tumores malignos", "lugar"],
+    "correct": "neoplasias",
+    "explanation": "'Malignancies' means 'neoplasias' or 'tumores malignos' in Portuguese. Definition: The state of being malignant or diseased."
+  },
+  {
+    "question": "What is the Portuguese word for 'astonishment'?",
+    "options": ["espanto", "tempo", "pessoa", "lugar"],
+    "correct": "espanto",
+    "explanation": "'Astonishment' means 'espanto' in Portuguese. Definition: A feeling of great surprise or wonder."
+  },
+  {
+    "question": "What is the Portuguese word for 'wisdom'?",
+    "options": ["sabedoria", "lugar", "palavra", "tempo"],
+    "correct": "sabedoria",
+    "explanation": "'Wisdom' means 'sabedoria' in Portuguese. Definition: The quality of having experience, knowledge, and good judgment."
+  },
+  {
+    "question": "What is the Portuguese word for 'journey'?",
+    "options": ["viagem", "pessoa", "tempo", "palavra"],
+    "correct": "viagem",
+    "explanation": "'Journey' means 'viagem' in Portuguese. Definition: An act of traveling from one place to another."
+  },
+  {
+    "question": "What is the Portuguese word for 'strength'?",
+    "options": ["força", "pessoa", "lugar", "tempo"],
+    "correct": "força",
+    "explanation": "'Strength' means 'força' in Portuguese. Definition: The quality or state of being physically strong."
+  },
+  {
+    "question": "What is the Portuguese word for 'friendship'?",
+    "options": ["amizade", "pessoa", "palavra", "lugar"],
+    "correct": "amizade",
+    "explanation": "'Friendship' means 'amizade' in Portuguese. Definition: A state of mutual trust and support between friends."
+  },
+  {
+    "question": "What is the Portuguese word for 'happiness'?",
+    "options": ["felicidade", "tristeza", "amizade", "força"],
+    "correct": "felicidade",
+    "explanation": "'Happiness' means 'felicidade' in Portuguese. Definition: The state of being happy."
+  },
+  {
+    "question": "What is the Portuguese word for 'sadness'?",
+    "options": ["felicidade", "tristeza", "saúde", "esperança"],
+    "correct": "tristeza",
+    "explanation": "'Sadness' means 'tristeza' in Portuguese. Definition: The condition of feeling sorrow or unhappiness."
+  },
+  {
+    "question": "What is the Portuguese word for 'strength'?",
+    "options": ["força", "pessoa", "lugar", "tempo"],
+    "correct": "força",
+    "explanation": "'Strength' means 'força' in Portuguese. Definition: The quality or state of being physically strong."
+  },
+  {
+    "question": "What is the Portuguese word for 'love'?",
+    "options": ["amor", "amizade", "coragem", "saudade"],
+    "correct": "amor",
+    "explanation": "'Love' means 'amor' in Portuguese. Definition: An intense feeling of deep affection."
+  },
+  {
+    "question": "What is the Portuguese word for 'peace'?",
+    "options": ["guerra", "medo", "paz", "raiva"],
+    "correct": "paz",
+    "explanation": "'Peace' means 'paz' in Portuguese. Definition: Freedom from disturbance; tranquility."
+  },
+  {
+    "question": "What is the Portuguese word for 'hope'?",
+    "options": ["esperança", "tristeza", "coragem", "medo"],
+    "correct": "esperança",
+    "explanation": "'Hope' means 'esperança' in Portuguese. Definition: A feeling of trust or desire for a certain thing to happen."
+  },
+  {
+    "question": "What is the Portuguese word for 'fear'?",
+    "options": ["felicidade", "paz", "medo", "alegria"],
+    "correct": "medo",
+    "explanation": "'Fear' means 'medo' in Portuguese. Definition: An unpleasant emotion caused by the belief that someone or something is dangerous."
+  },
+  {
+    "question": "What is the Portuguese word for 'courage'?",
+    "options": ["coragem", "força", "poder", "raiva"],
+    "correct": "coragem",
+    "explanation": "'Courage' means 'coragem' in Portuguese. Definition: The ability to do something that frightens one."
+  },
+  {
+    "question": "What is the Portuguese word for 'freedom'?",
+    "options": ["prisão", "liberdade", "poder", "força"],
+    "correct": "liberdade",
+    "explanation": "'Freedom' means 'liberdade' in Portuguese. Definition: The power or right to act, speak, or think as one wants."
+  },
+  {
+    "question": "What is the Portuguese word for 'success'?",
+    "options": ["fracasso", "esperança", "sucesso", "desejo"],
+    "correct": "sucesso",
+    "explanation": "'Success' means 'sucesso' in Portuguese. Definition: The accomplishment of an aim or purpose."
+  },
+  {
+    "question": "What is the Portuguese word for 'devilishly'?",
+    "options": [
+      "diabolicamente",
+      "demoníacamente",
+      "palavrosamente",
+      "satanicamente"
+    ],
+    "correct": "diabolicamente",
+    "explanation": "'Devilishly' means 'diabolicamente' in Portuguese. Definition: In a devilish manner."
+  },
+  {
+    "question": "What is the Portuguese word for 'caestuses'?",
+    "options": [
+      "armas romanas",
+      "luvas de combate",
+      "objetos antigos",
+      "armas antigas"
+    ],
+    "correct": "armas romanas",
+    "explanation": "'Caestuses' refers to a type of Roman weapon, usually worn on the hand. Definition: A type of weapon used by ancient Romans."
+  },
+  {
+    "question": "What is the Portuguese word for 'adjutant'?",
+    "options": ["ajudante", "assistente", "comandante", "suboficial"],
+    "correct": "ajudante",
+    "explanation": "'Adjutant' means 'ajudante' in Portuguese. Definition: A lower-ranking officer who assists a higher-ranking officer with administrative affairs."
+  },
+  {
+    "question": "What is the Portuguese word for 'malignancies'?",
+    "options": [
+      "neoplasias",
+      "tumores malignos",
+      "carcinoma",
+      "doenças graves"
+    ],
+    "correct": "neoplasias",
+    "explanation": "'Malignancies' means 'neoplasias' or 'tumores malignos' in Portuguese. Definition: The state of being malignant or diseased."
+  },
+  {
+    "question": "What is the Portuguese word for 'transcendent'?",
+    "options": [
+      "extradimensional",
+      "transcendental",
+      "sobrenatural",
+      "invisível"
+    ],
+    "correct": "transcendental",
+    "explanation": "'Transcendent' means 'transcendental' in Portuguese. Definition: Going beyond ordinary limits."
+  },
+  {
+    "question": "What is the Portuguese word for 'cryptic'?",
+    "options": ["enigmático", "misterioso", "oculto", "confuso"],
+    "correct": "enigmático",
+    "explanation": "'Cryptic' means 'enigmático' in Portuguese. Definition: Having a mysterious or obscure meaning."
+  },
+  {
+    "question": "What is the Portuguese word for 'sentimentality'?",
+    "options": [
+      "nostalgia",
+      "sensibilidade",
+      "emocionalidade",
+      "sentimentalismo"
+    ],
+    "correct": "sentimentalismo",
+    "explanation": "'Sentimentality' means 'sentimentalismo' in Portuguese. Definition: Excessive tenderness, sadness, or nostalgia."
+  },
+  {
+    "question": "What is the Portuguese word for 'serenity'?",
+    "options": ["calma", "serenidade", "tranquilidade", "equilíbrio"],
+    "correct": "serenidade",
+    "explanation": "'Serenity' means 'serenidade' in Portuguese. Definition: The state of being calm and peaceful."
+  },
+  {
+    "question": "What is the Portuguese word for 'metamorphosis'?",
+    "options": ["transformação", "metamorfose", "mudança", "evolução"],
+    "correct": "metamorfose",
+    "explanation": "'Metamorphosis' means 'metamorfose' in Portuguese. Definition: A complete change of form, structure, or substance."
+  },
+  {
+    "question": "What is the Portuguese word for 'fragmented'?",
+    "options": ["fragmentado", "quebrado", "partido", "despedaçado"],
+    "correct": "fragmentado",
+    "explanation": "'Fragmented' means 'fragmentado' in Portuguese. Definition: Broken into pieces."
+  },
+  {
+    "question": "What is the Portuguese word for 'anguish'?",
+    "options": ["angústia", "sofrimento", "desespero", "aflição"],
+    "correct": "angústia",
+    "explanation": "'Anguish' means 'angústia' in Portuguese. Definition: Severe mental or physical pain."
+  },
+  {
+    "question": "What is the Portuguese word for 'chronic'?",
+    "options": ["crônico", "perpétuo", "constante", "habitual"],
+    "correct": "crônico",
+    "explanation": "'Chronic' means 'crônico' in Portuguese. Definition: Persistent and long-lasting."
+  },
+  {
+    "question": "What is the Portuguese word for 'paradox'?",
+    "options": ["paradoxo", "contradição", "ilusão", "engano"],
+    "correct": "paradoxo",
+    "explanation": "'Paradox' means 'paradoxo' in Portuguese. Definition: A statement that contradicts itself but may still be true."
+  },
+  {
+    "question": "What is the Portuguese word for 'ephemeral'?",
+    "options": ["efêmero", "temporário", "passageiro", "fugaz"],
+    "correct": "efêmero",
+    "explanation": "'Ephemeral' means 'efêmero' in Portuguese. Definition: Lasting for a very short time."
+  },
+  {
+    "question": "What is the Portuguese word for 'vitriol'?",
+    "options": ["vitriol", "ácido", "veneno", "raiva"],
+    "correct": "vitriol",
+    "explanation": "'Vitriol' means 'vitriol' in Portuguese. Definition: Cruel and bitter criticism."
+  },
+  {
+    "question": "What is the Portuguese word for 'perceptive'?",
+    "options": ["perceptivo", "sensível", "astuto", "observador"],
+    "correct": "perceptivo",
+    "explanation": "'Perceptive' means 'perceptivo' in Portuguese. Definition: Having or showing sensitive insight."
+  },
+  {
+    "question": "What is the Portuguese word for 'persistence'?",
+    "options": ["persistência", "constância", "resiliência", "determinação"],
+    "correct": "persistência",
+    "explanation": "'Persistence' means 'persistência' in Portuguese. Definition: The continued effort to do or achieve something despite difficulties."
+  },
+  {
+    "question": "What is the Portuguese word for 'ornate'?",
+    "options": ["ornado", "decorado", "elaborado", "sofisticado"],
+    "correct": "ornado",
+    "explanation": "'Ornate' means 'ornado' in Portuguese. Definition: Elaborately decorated."
+  },
+  {
+    "question": "What is the Portuguese word for 'harbinger'?",
+    "options": ["presságio", "precursor", "mensageiro", "indício"],
+    "correct": "presságio",
+    "explanation": "'Harbinger' means 'presságio' in Portuguese. Definition: A person or thing that announces or signals the approach of another."
+  },
+  {
+    "question": "What is the Portuguese word for 'compassion'?",
+    "options": ["compaixão", "solidariedade", "empatia", "carinho"],
+    "correct": "compaixão",
+    "explanation": "'Compassion' means 'compaixão' in Portuguese. Definition: Sympathetic pity and concern for the sufferings or misfortunes of others."
+  },
+  {
+    "question": "What is the Portuguese word for 'eloquent'?",
+    "options": ["eloquente", "persuasivo", "articulado", "explicativo"],
+    "correct": "eloquente",
+    "explanation": "'Eloquent' means 'eloquente' in Portuguese. Definition: Fluent or persuasive in speaking or writing."
+  },
+  {
+    "question": "What is the Portuguese word for 'fortitude'?",
+    "options": ["fortaleza", "coragem", "resiliência", "vigor"],
+    "correct": "fortaleza",
+    "explanation": "'Fortitude' means 'fortaleza' in Portuguese. Definition: Courage in pain or adversity."
+  },
+  {
+    "question": "What is the Portuguese word for 'innocuous'?",
+    "options": ["inofensivo", "inocente", "inofensivo", "harmless"],
+    "correct": "inofensivo",
+    "explanation": "'Innocuous' means 'inofensivo' in Portuguese. Definition: Not harmful or offensive."
+  },
+  {
+    "question": "What is the Portuguese word for 'profound'?",
+    "options": ["profundo", "sério", "intenso", "significativo"],
+    "correct": "profundo",
+    "explanation": "'Profound' means 'profundo' in Portuguese. Definition: Having deep meaning or significance."
+  },
+
+  {
+    "question": "Which is the correct form? Nós vamos ___ escola amanhã.",
+    "options": ["para", "a", "de", "em"],
+    "correct": "à",
+    "explanation": "The correct form is 'à' (a + a = à) because 'escola' is feminine and requires the contraction."
+  },
+  {
+    "question": "Which is the correct form? Eu estudei ___ noite toda.",
+    "options": ["de", "a", "na", "para"],
+    "correct": "a",
+    "explanation": "The correct preposition is 'a' because it is used to express the entire duration of the night."
+  },
+  {
+    "question": "Which is the correct form? Ela vai ___ médico amanhã.",
+    "options": ["ao", "a", "para", "em"],
+    "correct": "ao",
+    "explanation": "The correct preposition is 'ao' (a + o = ao) because 'médico' is masculine and it indicates direction or purpose."
+  },
+  {
+    "question": "Which is the correct form? O livro está ___ mesa.",
+    "options": ["na", "em", "a", "para"],
+    "correct": "na",
+    "explanation": "The correct preposition is 'na' (em + a = na) because 'mesa' is feminine."
+  },
+  {
+    "question": "Which is the correct form? Eu gosto ___ chocolate.",
+    "options": ["de", "para", "em", "a"],
+    "correct": "de",
+    "explanation": "The correct preposition is 'de' when expressing likes or preferences."
+  },
+  {
+    "question": "Which is the correct form? Ele vai ___ casa depois do trabalho.",
+    "options": ["para", "à", "de", "em"],
+    "correct": "para",
+    "explanation": "The correct preposition is 'para' because it indicates movement towards a place."
+  },
+  {
+    "question": "Which is the correct form? Ela chegou ___ aeroporto muito cedo.",
+    "options": ["no", "na", "em", "de"],
+    "correct": "no",
+    "explanation": "The correct preposition is 'no' (em + o = no) because 'aeroporto' is masculine."
+  },
+  {
+    "question": "Which is the correct form? Eles viajaram ___ Brasil.",
+    "options": ["para", "a", "ao", "para o"],
+    "correct": "para o",
+    "explanation": "The correct preposition is 'para o' when referring to countries with a masculine article."
+  },
+  {
+    "question": "Which is the correct form? Eu fui ___ mercado comprar pão.",
+    "options": ["ao", "à", "a", "no"],
+    "correct": "ao",
+    "explanation": "The correct preposition is 'ao' (a + o = ao) because 'mercado' is masculine."
+  },
+  {
+    "question": "Which is the correct form? Eles vão viajar ___ próxima semana.",
+    "options": ["para", "a", "na", "na próxima"],
+    "correct": "na",
+    "explanation": "The correct preposition is 'na' because 'semana' is feminine."
+  },
+  {
+    "question": "Which is the correct form? Eu moro ___ Rio de Janeiro.",
+    "options": ["no", "na", "em", "para"],
+    "correct": "no",
+    "explanation": "The correct preposition is 'no' (em + o = no) because 'Rio de Janeiro' is masculine."
+  },
+  {
+    "question": "Which is the correct form? Ele vai trabalhar ___ terça-feira.",
+    "options": ["na", "a", "em", "de"],
+    "correct": "na",
+    "explanation": "The correct preposition is 'na' because 'terça-feira' is feminine."
+  },
+  {
+    "question": "Which is the correct form? O ônibus vai passar ___ sete horas.",
+    "options": ["à", "a", "em", "para"],
+    "correct": "às",
+    "explanation": "The correct preposition is 'às' (a + as = às) because 'sete horas' is feminine and plural."
+  },
+  {
+    "question": "Which is the correct form? Ele vai ___ festa hoje à noite.",
+    "options": ["para", "a", "na", "à"],
+    "correct": "à",
+    "explanation": "The correct preposition is 'à' because 'festa' is feminine, and the contraction of 'a' + 'a' is 'à'."
+  },
+  {
+    "question": "Which is the correct form? Eu estou indo ___ hospital.",
+    "options": ["para o", "a", "no", "à"],
+    "correct": "para o",
+    "explanation": "The correct preposition is 'para o' because it indicates the movement towards the hospital."
+  },
+  {
+    "question": "Which is the correct form? Ele gosta ___ correr de manhã.",
+    "options": ["de", "em", "para", "a"],
+    "correct": "de",
+    "explanation": "The correct preposition is 'de' when referring to activities or hobbies."
+  },
+  {
+    "question": "Which is the correct form? Eles chegaram ___ aeroporto de madrugada.",
+    "options": ["a", "na", "no", "à"],
+    "correct": "no",
+    "explanation": "The correct preposition is 'no' because 'aeroporto' is masculine."
+  },
+  {
+    "question": "Which is the correct form? Eu vou viajar ___ Europa no próximo ano.",
+    "options": ["para a", "à", "para", "na"],
+    "correct": "para a",
+    "explanation": "The correct preposition is 'para a' because 'Europa' is feminine."
+  },
+  {
+    "question": "Which is the correct form? Ele vai se encontrar ___ amigo no café.",
+    "options": ["com", "a", "para", "em"],
+    "correct": "com",
+    "explanation": "The correct preposition is 'com' because it is used when referring to meeting someone."
+  }
+]
