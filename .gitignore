@@ -1,0 +1,34 @@
+# Ignore system files
+.DS_Store           # macOS system file
+Thumbs.db           # Windows system file
+
+# Ignore node_modules
+node_modules/       # For Node.js projects
+
+# Ignore environment files
+.env                # Environment variables file
+
+# Ignore Python bytecode files
+*.pyc
+*.pyo
+__pycache__/        # Python bytecode cache
+
+# Ignore IDE/project specific files
+.vscode/            # VS Code configuration files
+.idea/              # JetBrains IDE configuration files
+*.sublime-workspace
+*.sublime-project
+
+# Ignore log files
+*.log               # Log files
+
+# Ignore temporary files
+*.bak
+*.swp
+*~
+
+*.pyc
+*.pyo
+__pycache__/
+*.log
+env/
