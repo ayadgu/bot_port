@@ -12,7 +12,10 @@ import signal
 import sys
 from collections import OrderedDict
 from collections import defaultdict
-
+import requests
+import json
+from bs4 import BeautifulSoup
+import random
 
 # Load environment variables
 load_dotenv()
@@ -29,6 +32,247 @@ current_exercise = {}
 user_exercise_history = defaultdict(list)
 
 
+# Dictionary to store reading passages
+PORTUGUESE_READINGS = [
+    {
+        "title": "Um Dia na Praia",
+        "text": """Ontem, fui à praia com minha família. O dia estava ensolarado e quente. Chegamos cedo e encontramos um bom lugar para colocar nossas toalhas. As crianças foram nadar no mar, enquanto os adultos conversavam sob o guarda-sol. Almoçamos sanduíches e frutas que trouxemos de casa. À tarde, fizemos um castelo de areia enorme. Foi um dia muito relaxante e divertido. Voltamos para casa no final da tarde, cansados mas felizes.""",
+        "questions": [
+            {
+                "question": "Onde a família passou o dia?",
+                "options": ["Na montanha", "No parque", "Na praia", "No museu"],
+                "correct": "Na praia",
+                "explanation": "'Ontem, fui à praia com minha família' indica claramente onde passaram o dia."
+            },
+            {
+                "question": "Como estava o clima naquele dia?",
+                "options": ["Chuvoso", "Ensolarado e quente", "Nublado", "Ventoso"],
+                "correct": "Ensolarado e quente",
+                "explanation": "'O dia estava ensolarado e quente' descreve o clima do dia."
+            },
+            {
+                "question": "O que a família comeu no almoço?",
+                "options": ["Peixe grelhado", "Sanduíches e frutas", "Pizza", "Não almoçaram"],
+                "correct": "Sanduíches e frutas",
+                "explanation": "'Almoçamos sanduíches e frutas que trouxemos de casa' menciona o que comeram."
+            }
+        ]
+    },
+    {
+        "title": "Meu Cachorro Carlos",
+        "text": """Tenho um cachorro chamado Carlos. Ele é um labrador preto com cinco anos de idade. Carlos é muito brincalhão e energético. Todas as manhãs, levanto cedo para levá-lo para passear no parque. Ele adora correr atrás da bola e brincar com outros cachorros. Carlos também é muito inteligente. Ele sabe sentar, dar a pata e até fingir de morto quando comando. À noite, Carlos dorme em sua cama ao lado da minha. Ele é meu melhor amigo.""",
+        "questions": [
+            {
+                "question": "Qual é a raça do cachorro?",
+                "options": ["Bulldog", "Labrador", "Poodle", "Pastor Alemão"],
+                "correct": "Labrador",
+                "explanation": "'Ele é um labrador preto' menciona a raça do cachorro."
+            },
+            {
+                "question": "Quantos anos tem Carlos?",
+                "options": ["Três", "Quatro", "Cinco", "Seis"],
+                "correct": "Cinco",
+                "explanation": "'Ele é um labrador preto com cinco anos de idade' indica a idade do cachorro."
+            },
+            {
+                "question": "O que Carlos gosta de fazer no parque?",
+                "options": ["Dormir", "Correr atrás da bola", "Comer", "Nadar"],
+                "correct": "Correr atrás da bola",
+                "explanation": "'Ele adora correr atrás da bola e brincar com outros cachorros' descreve o que ele gosta de fazer."
+            }
+        ]
+    },
+    {
+        "title": "Uma Visita a São Paulo",
+        "text": """No mês passado, visitei São Paulo pela primeira vez. É a maior cidade do Brasil, com muitos prédios altos e ruas movimentadas. Fiquei hospedado em um hotel no centro da cidade. Durante o dia, visitei o Museu de Arte de São Paulo (MASP) e o Parque Ibirapuera. A comida era deliciosa, especialmente a pizza que comi na Bela Vista, um bairro conhecido por restaurantes italianos. Também fui ao Mercado Municipal para experimentar o famoso sanduíche de mortadela. Apesar do trânsito intenso, consegui conhecer muitos lugares interessantes em apenas três dias.""",
+        "questions": [
+            {
+                "question": "Qual cidade foi visitada?",
+                "options": ["Rio de Janeiro", "Brasília", "Salvador", "São Paulo"],
+                "correct": "São Paulo",
+                "explanation": "'No mês passado, visitei São Paulo pela primeira vez' menciona claramente a cidade."
+            },
+            {
+                "question": "Quantos dias durou a visita?",
+                "options": ["Dois", "Três", "Quatro", "Uma semana"],
+                "correct": "Três",
+                "explanation": "'Consegui conhecer muitos lugares interessantes em apenas três dias' indica a duração da visita."
+            },
+            {
+                "question": "O que a pessoa experimentou no Mercado Municipal?",
+                "options": ["Pizza", "Churrasco", "Sanduíche de mortadela", "Feijoada"],
+                "correct": "Sanduíche de mortadela",
+                "explanation": "'Também fui ao Mercado Municipal para experimentar o famoso sanduíche de mortadela' menciona o que foi consumido."
+            }
+        ]
+    }
+]
+
+
+
+# Add a new command handler for reading exercises
+@bot.message_handler(commands=['reading'])
+def reading_command(message):
+    chat_id = message.chat.id
+    
+    # Send a message that we're preparing a reading exercise
+    bot.send_message(chat_id, "📖 Preparando um exercício de leitura em português... Um momento, por favor.")
+    
+    try:
+        # Fetch and prepare reading material
+        reading = fetch_and_prepare_reading()
+        
+        # Store current reading exercise questions for this user
+        if 'reading_questions' not in current_exercise:
+            current_exercise['reading_questions'] = {}
+        current_exercise['reading_questions'][chat_id] = reading['questions']
+        current_exercise['reading_current_question'] = {chat_id: 0}
+        
+        # Send the reading passage
+        reading_message = f"📚 *{reading['title']}*\n\n{reading['text']}"
+        
+        # If it has source information, add it
+        if 'source' in reading and 'link' in reading and reading['link']:
+            reading_message += f"\n\nFonte: {reading['source']}"
+        
+        bot.send_message(chat_id, reading_message, parse_mode="Markdown")
+        
+        # Send the first question after a short delay
+        bot.send_message(chat_id, "Leia o texto acima com atenção. Vou enviar perguntas sobre ele em seguida.")
+        
+        # Send first question
+        send_reading_question(chat_id)
+        
+    except Exception as e:
+        print(f"Error in reading exercise: {e}")
+        bot.send_message(
+            chat_id, 
+            "Desculpe, tive um problema ao preparar o exercício de leitura. Por favor, tente novamente.")
+    chat_id = message.chat.id
+    
+    # Send a message that we're preparing a reading exercise
+    bot.send_message(chat_id, "📖 Preparando um exercício de leitura em português... Um momento, por favor.")
+    
+    try:
+        # Fetch and prepare reading material
+        reading = fetch_and_prepare_reading()
+        
+        # Store current reading exercise questions for this user
+        if 'reading_questions' not in current_exercise:
+            current_exercise['reading_questions'] = {}
+        current_exercise['reading_questions'][chat_id] = reading['questions']
+        current_exercise['reading_current_question'] = {chat_id: 0}
+        
+        # Send the reading passage
+        reading_message = f"📚 *{reading['title']}*\n\n{reading['text']}"
+        
+        # If it has source information, add it
+        if 'source' in reading and 'link' in reading and reading['link']:
+            reading_message += f"\n\nFonte: {reading['source']}"
+        
+        bot.send_message(chat_id, reading_message, parse_mode="Markdown")
+        
+        # Send the first question after a short delay
+        bot.send_message(chat_id, "Leia o texto acima com atenção. Vou enviar perguntas sobre ele em seguida.")
+        
+        # Send first question
+        send_reading_question(chat_id)
+        
+    except Exception as e:
+        print(f"Error in reading exercise: {e}")
+        bot.send_message(
+            chat_id, 
+            "Desculpe, tive um problema")
+
+def send_reading_question(chat_id):
+    """Send a reading comprehension question to the user"""
+    if chat_id not in current_exercise.get('reading_current_question', {}):
+        bot.send_message(chat_id, "Sorry, I can't find your reading exercise. Please use /reading to get a new one.")
+        return
+    
+    # Get the current question index
+    current_idx = current_exercise['reading_current_question'][chat_id]
+    
+    # Check if we've reached the end of questions
+    if current_idx >= len(current_exercise['reading_questions'][chat_id]):
+        bot.send_message(chat_id, "✅ You've completed all the questions for this reading exercise!")
+        return
+    
+    # Get the current question
+    question_data = current_exercise['reading_questions'][chat_id][current_idx]
+    
+    # Format the question
+    question_text = f"📝 Question {current_idx + 1}: {question_data['question']}"
+    
+    # Create markup with options
+    markup = telebot.types.InlineKeyboardMarkup()
+    for option in question_data['options']:
+        # Use a special callback format to distinguish from other exercise types
+        callback_data = f"reading_{option}"
+        markup.add(telebot.types.InlineKeyboardButton(option, callback_data=callback_data))
+    
+    # Send the question
+    bot.send_message(chat_id, question_text, reply_markup=markup)
+
+
+# Add handler for reading question answers
+@bot.callback_query_handler(func=lambda call: call.data.startswith('reading_'))
+def handle_reading_answer(call):
+    chat_id = call.message.chat.id
+    selected_option = call.data.replace('reading_', '')
+    
+    # Check if there's a current reading exercise for this chat
+    if chat_id not in current_exercise.get('reading_current_question', {}):
+        bot.send_message(chat_id, "Sorry, I can't find your reading exercise. Please use /reading to get a new one.")
+        return
+    
+    # Get the current question index
+    current_idx = current_exercise['reading_current_question'][chat_id]
+    
+    # Get the current question
+    question_data = current_exercise['reading_questions'][chat_id][current_idx]
+    correct_answer = question_data['correct']
+    
+    # Check if the answer is correct
+    if selected_option == correct_answer:
+        result = "✅ Correct! Muito bem!"
+        explanation = question_data.get('explanation', '')
+        if explanation:
+            result += f"\n\n{explanation}"
+    else:
+        result = f"❌ Incorrect. The correct answer is: {correct_answer}"
+        explanation = question_data.get('explanation', '')
+        if explanation:
+            result += f"\n\n{explanation}"
+    
+    # Send result
+    bot.send_message(chat_id, result)
+    
+    # Update user stats
+    if chat_id not in user_answers:
+        user_answers[chat_id] = {'correct': 0, 'total': 0}
+    
+    user_answers[chat_id]['total'] += 1
+    if selected_option == correct_answer:
+        user_answers[chat_id]['correct'] += 1
+    
+    # Move to the next question
+    current_exercise['reading_current_question'][chat_id] += 1
+    
+    # Check if there are more questions
+    if current_exercise['reading_current_question'][chat_id] < len(current_exercise['reading_questions'][chat_id]):
+        # Send the next question after a short delay
+        time.sleep(1)
+        send_reading_question(chat_id)
+    else:
+        # All questions answered
+        bot.send_message(chat_id, "🎉 Congratulations! You've completed all the questions for this reading exercise!")
+
+def fetch_and_prepare_reading():
+    """Fetch and prepare reading material for the exercise"""
+    # Select a random reading from the list
+    reading = random.choice(PORTUGUESE_READINGS)
+    return reading
 
 PORTUGUESE_COURSES = OrderedDict([
     ("basics", {
@@ -61,7 +305,172 @@ PORTUGUESE_COURSES = OrderedDict([
 7. Sete
 8. Oito
 9. Nove
-10. Dez""",        "exercises": []
+10. Dez""",        
+ "exercises": [
+  {
+    "question": "Which of the following expressions is a formal greeting in Portuguese?",
+    "options": ["Oi", "Alô", "Olá", "Tchau"],
+    "correct": "Olá",
+    "explanation": "'Olá' is commonly used as a formal greeting, equivalent to 'Hello'."
+  },
+  {
+    "question": "Which Portuguese phrase is used to greet someone in the morning?",
+    "options": ["Bom dia", "Boa noite", "Boa tarde", "Até logo"],
+    "correct": "Bom dia",
+    "explanation": "'Bom dia' is the Portuguese phrase used to wish someone a good morning."
+  },
+  {
+    "question": "Which expression would you use to wish someone a good evening or night in Portuguese?",
+    "options": ["Boa noite", "Bom dia", "Boa tarde", "Oi"],
+    "correct": "Boa noite",
+    "explanation": "'Boa noite' is the phrase used for both 'Good evening' and 'Good night'."
+  },
+  {
+    "question": "What is the masculine form of 'Thank you' in Portuguese?",
+    "options": ["Obrigado", "Obrigada", "Desculpe", "Com licença"],
+    "correct": "Obrigado",
+    "explanation": "Males use 'Obrigado' to express gratitude in Portuguese."
+  },
+  {
+    "question": "What form should a woman use to say 'Thank you' in Portuguese?",
+    "options": ["Obrigada", "Obrigado", "Por favor", "Com licença"],
+    "correct": "Obrigada",
+    "explanation": "Women use 'Obrigada' instead of 'Obrigado' to say 'Thank you'."
+  },
+  {
+    "question": "Which of the following means 'Excuse me' in the context of asking for permission in Portuguese?",
+    "options": ["Com licença", "Desculpe", "Oi", "Por favor"],
+    "correct": "Com licença",
+    "explanation": "'Com licença' is used when asking for permission or excusing oneself."
+  },
+  {
+    "question": "Which phrase is used to politely ask for something in Portuguese?",
+    "options": ["Desculpe", "Tchau", "Por favor", "Boa noite"],
+    "correct": "Por favor",
+    "explanation": "'Por favor' means 'Please' in Portuguese, a polite way to make requests."
+  },
+  {
+    "question": "Which word means 'Good afternoon' in Portuguese?",
+    "options": ["Boa noite", "Boa tarde", "Tchau", "Bom dia"],
+    "correct": "Boa tarde",
+    "explanation": "'Boa tarde' is the correct expression for 'Good afternoon'."
+  },
+  {
+    "question": "Which of the following expressions means 'Goodbye' in Portuguese?",
+    "options": ["Tchau", "Adeus", "Oi", "Até logo"],
+    "correct": "Tchau",
+    "explanation": "'Tchau' is an informal way to say 'Goodbye' in Portuguese."
+  },
+  {
+    "question": "Which phrase means 'See you soon' in Portuguese?",
+    "options": ["Até logo", "Tchau", "Até mais", "Bom dia"],
+    "correct": "Até mais",
+    "explanation": "'Até mais' translates to 'See you soon' or 'See you later'."
+  },
+  {
+    "question": "What is the Portuguese word for 'Yes'?",
+    "options": ["Não", "Sim", "Talvez", "Claro"],
+    "correct": "Sim",
+    "explanation": "'Sim' means 'Yes' in Portuguese."
+  },
+  {
+    "question": "Which word means 'No' in Portuguese?",
+    "options": ["Não", "Sim", "Talvez", "Desculpe"],
+    "correct": "Não",
+    "explanation": "'Não' means 'No' in Portuguese."
+  },
+  {
+    "question": "How do you ask someone 'How are you?' in Portuguese?",
+    "options": ["Como vai?", "Onde você está?", "Como você está?", "O que você faz?"],
+    "correct": "Como você está?",
+    "explanation": "'Como você está?' means 'How are you?' in Portuguese."
+  },
+  {
+    "question": "Which phrase means 'My name is João' in Portuguese?",
+    "options": ["Meu nome é João", "Eu sou João", "Como está João?", "Quem é João?"],
+    "correct": "Meu nome é João",
+    "explanation": "'Meu nome é João' means 'My name is João'."
+  },
+  {
+    "question": "What is the Portuguese word for 'One'?",
+    "options": ["Um", "Primeiro", "Único", "Um e meio"],
+    "correct": "Um",
+    "explanation": "'Um' is the word for 'One' in Portuguese."
+  },
+  {
+    "question": "How do you say 'Two' in Portuguese?",
+    "options": ["Cinco", "Dois", "Dois e meio", "Dúzia"],
+    "correct": "Dois",
+    "explanation": "'Dois' means 'Two' in Portuguese."
+  },
+  {
+    "question": "What is the Portuguese word for 'Three'?",
+    "options": ["Três", "Triângulo", "Trilogia", "Treze"],
+    "correct": "Três",
+    "explanation": "'Três' means 'Three' in Portuguese."
+  },
+  {
+    "question": "How do you say 'Four' in Portuguese?",
+    "options": ["Cinco", "Quatro", "Quadrado", "Quarenta"],
+    "correct": "Quatro",
+    "explanation": "'Quatro' is the Portuguese word for 'Four'."
+  },
+  {
+    "question": "What is the Portuguese word for 'Five'?",
+    "options": ["Cinco", "Cinquenta", "Seis", "Seis e meio"],
+    "correct": "Cinco",
+    "explanation": "'Cinco' means 'Five' in Portuguese."
+  },
+  {
+    "question": "Which number means 'Six' in Portuguese?",
+    "options": ["Seis", "Sexta", "Cinco", "Sessenta"],
+    "correct": "Seis",
+    "explanation": "'Seis' is the Portuguese word for 'Six'."
+  },
+  {
+    "question": "What is the Portuguese word for 'Seven'?",
+    "options": ["Sete", "Setenta", "Sétimo", "Sete e meia"],
+    "correct": "Sete",
+    "explanation": "'Sete' means 'Seven' in Portuguese."
+  },
+  {
+    "question": "How do you say 'Eight' in Portuguese?",
+    "options": ["Oito", "Octavo", "Oitava", "Octante"],
+    "correct": "Oito",
+    "explanation": "'Oito' means 'Eight' in Portuguese."
+  },
+  {
+    "question": "What is the Portuguese word for 'Nine'?",
+    "options": ["Nove", "Novenário", "Nonagésimo", "Nona"],
+    "correct": "Nove",
+    "explanation": "'Nove' means 'Nine' in Portuguese."
+  },
+  {
+    "question": "How do you say 'Ten' in Portuguese?",
+    "options": ["Dez", "Década", "Dezena", "Decílio"],
+    "correct": "Dez",
+    "explanation": "'Dez' means 'Ten' in Portuguese."
+  },
+  {
+    "question": "Which phrase means 'Where are you from?' in Portuguese?",
+    "options": ["Onde você mora?", "De onde você é?", "Onde você vai?", "Como está você?"],
+    "correct": "De onde você é?",
+    "explanation": "'De onde você é?' means 'Where are you from?' in Portuguese."
+  },
+  {
+    "question": "What is the Portuguese phrase for 'I don’t understand'?",
+    "options": ["Eu entendi", "Eu sei", "Eu não entendo", "Eu gosto"],
+    "correct": "Eu não entendo",
+    "explanation": "'Eu não entendo' means 'I don’t understand'."
+  },
+  {
+    "question": "Which word means 'Friend' in Portuguese?",
+    "options": ["Amigo", "Amiga", "Amizade", "Amigável"],
+    "correct": "Amigo",
+    "explanation": "'Amigo' means 'Friend' in Portuguese."
+  }
+],
+
     }),
     # Other course sections
      ("ser_estar", {
@@ -463,6 +872,7 @@ def help_command(message):
     /start - Start receiving exercises
     /now - Get a random exercise immediately
     /courses - Browse available Portuguese courses
+    /reading - Reading exercice
     /stats - View your exercise statistics
     /generate [number] - Generate new exercises (default: 5)
     /help - Show this help message
@@ -985,7 +1395,9 @@ if __name__ == "__main__":
     try:
         print(f"Bot started! Initial exercise sent to {USER_CHAT_ID}")
         print("Listening for responses...")
-        bot.polling(none_stop=True, timeout=60)
+        # bot.polling(none_stop=True, timeout=60)
+        bot.infinity_polling(timeout=10, long_polling_timeout = 5)
+
     except Exception as e:
         print(f"Bot polling error: {e}")
     finally:
