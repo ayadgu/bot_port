@@ -3,8 +3,8 @@
 A **Telegram bot** that helps users practice Portuguese with interactive exercises, quizzes, and sentence completion challenges.
 
 <p align="center">
-  <img src="assets/PortugueseBot/photo1.jpg" alt="Image 1" width="30%"/>
-  <img src="assets/PortugueseBot/photo2.jpg" alt="Image 2" width="30%"/>
+  <img src="assets/PortugueseBot/photo1.jpg" alt="Image 1" width="30%"  style="margin-right: 1%;" />
+  <img src="assets/PortugueseBot/photo2.jpg" alt="Image 2" width="30%"  style="margin-right: 1%;" />
   <img src="assets/PortugueseBot/photo3.jpg" alt="Image 3" width="30%"/>
 </p>
 
