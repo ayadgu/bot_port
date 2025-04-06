@@ -1,8 +1,30 @@
 from collections import OrderedDict
 
+
+# Structure de données pour les exercices audio générés
+TEXT_TO_SPEECH_EXERCISES = {
+    "1": {
+        "title": "Basic Conversation",
+        "text": "Olá, como vai você? Eu estou bem, obrigado.",
+        "question": "O que a pessoa perguntou?",
+        "options": ["Como vai você?", "Onde você mora?", "Qual é seu nome?"],
+        "correct": "Como vai você?"
+    },
+    "tts_2": {
+        "title": "No restaurante",
+        "text": "Eu gostaria de pedir o prato do dia, por favor.",
+        "question": "O que a pessoa está pedindo?",
+        "options": ["A conta", "O prato do dia", "O cardápio", "Uma bebida"],
+        "correct": "O prato do dia",
+        "explanation": "A pessoa está pedindo 'o prato do dia' (le plat du jour)."
+    },
+    # Ajoutez d'autres exercices selon vos besoins
+}
+
 # Structure de données améliorée pour organiser les cours par niveau
 PORTUGUESE_LEVELS = {
     "A0": {
+        "level": "A0",  # Plutôt que "category": "grammar"
         "title": "Débutant complet",
         "courses": {
             "a0_1": {"title": "Salutations de base", "content": "...", "exercises": []},
@@ -11,6 +33,7 @@ PORTUGUESE_LEVELS = {
         }
     },
     "A1": {
+        "level": "A1",  # Plus cohérent avec la structure
         "title": "Débutant",
         "courses": {
             # Courses for A1 level
@@ -23,6 +46,8 @@ PORTUGUESE_LEVELS = {
 EXERCISE_THEMES = {
     
     "shopping": {
+                "category": "grammar",  # Ajouter cette ligne pour chaque thème
+
         "title": "Faire les courses",
         "description": "Apprenez à parler de vos achats et à faire les courses en portugais",
         "exercises": [
@@ -49,46 +74,33 @@ EXERCISE_THEMES = {
                 "options": ["Você tem troco?", "Você tem dinheiro?", "Você tem comida?", "Você tem uma bolsa?"],
                 "correct": "Você tem troco?",
                 "explanation": "'Você tem troco?' signifie 'Avez-vous de la monnaie ?'"
-            },
-            {
-                "question": "Comment dire 'Je paie par carte' en portugais ?",
-                "options": ["Eu pago em dinheiro", "Eu pago com cartão", "Eu pago com cheque", "Eu pago depois"],
-                "correct": "Eu pago com cartão",
-                "explanation": "'Eu pago com cartão' signifie 'Je paie par carte'"
-            },
-            {
-                "question": "Comment demander 'Pouvez-vous me donner un sac ?' en portugais ?",
-                "options": ["Você pode me dar um troco?", "Você pode me dar uma sacola?", "Você pode me dar uma moeda?", "Você pode me dar uma nota?"],
-                "correct": "Você pode me dar uma sacola?",
-                "explanation": "'Você pode me dar uma sacola?' signifie 'Pouvez-vous me donner un sac ?'"
-            },
-            {
-                "question": "Comment dire 'Je cherche du lait' en portugais ?",
-                "options": ["Eu estou procurando leite", "Eu estou bebendo leite", "Eu estou comprando leite", "Eu estou vendendo leite"],
-                "correct": "Eu estou procurando leite",
-                "explanation": "'Eu estou procurando leite' signifie 'Je cherche du lait'"
-            },
-            {
-                "question": "Comment dire 'C'est trop cher' en portugais ?",
-                "options": ["Está muito barato", "Está muito caro", "Está muito pequeno", "Está muito grande"],
-                "correct": "Está muito caro",
-                "explanation": "'Está muito caro' signifie 'C'est trop cher'"
-            },
-            {
-                "question": "Comment dire 'Avez-vous des fruits frais ?' en portugais ?",
-                "options": ["Você tem pão?", "Você tem carne?", "Você tem frutas frescas?", "Você tem leite?"],
-                "correct": "Você tem frutas frescas?",
-                "explanation": "'Você tem frutas frescas?' signifie 'Avez-vous des fruits frais ?'"
-            },
-            {
-                "question": "Comment dire 'Je voudrais un kilo de pommes' en portugais ?",
-                "options": ["Eu quero um quilo de maçãs", "Eu como um quilo de maçãs", "Eu vendo um quilo de maçãs", "Eu pago um quilo de maçãs"],
-                "correct": "Eu quero um quilo de maçãs",
-                "explanation": "'Eu quero um quilo de maçãs' signifie 'Je voudrais un kilo de pommes'"
             }
+            ,
+            # Nouveaux exercices à trous
+        {
+            "question": "Complétez la phrase: 'Eu quero _____ uma camiseta nova.' (acheter)",
+            "type": "fill_in_blank",
+            "correct": "comprar",
+            "explanation": "'Comprar' est le verbe 'acheter' en portugais."
+        },
+        {
+            "question": "Complétez la phrase: 'Este produto está em _____.' (promotion)",
+            "type": "fill_in_blank",
+            "correct": "promoção",
+            "explanation": "'Promoção' signifie 'promotion' en portugais."
+        },
+        {
+            "question": "Complétez la phrase: 'Onde fica o _____ de frutas?' (rayon)",
+            "type": "fill_in_blank",
+            "correct": "setor",
+            "acceptable_answers": ["setor", "departamento", "seção"],
+            "explanation": "'Setor', 'departamento' ou 'seção' peuvent tous être utilisés pour 'rayon' en portugais."
+        }
         ]
     },
     "travel": {
+                "category": "grammar",  # Ajouter cette ligne pour chaque thème
+
         "title": "Voyager",
         "description": "Apprenez à parler de vos déplacements et de vos voyages en portugais",
         "exercises": [
@@ -355,6 +367,8 @@ EXERCISE_THEMES = {
 }
 ,
 "relations_sociales": {
+                "category": "grammar",  # Ajouter cette ligne pour chaque thème
+
         "title": "Relations sociales en portugais",
         "description": "Apprenez à parler des relations sociales et des interactions en portugais",
         "exercises": [
@@ -422,6 +436,8 @@ EXERCISE_THEMES = {
     }
     ,
      "jours_de_la_semaine": {
+                "category": "grammar",  # Ajouter cette ligne pour chaque thème
+
         "title": "Jours de la semaine en portugais",
         "description": "Apprenez à parler des jours de la semaine en portugais",
         "exercises": [
@@ -731,6 +747,8 @@ EXERCISE_THEMES = {
 ,
 
     "presentation": {
+                "category": "grammar",  # Ajouter cette ligne pour chaque thème
+
         "title": "Se présenter en portugais brésilien",
         "description": "Apprenez à vous présenter et à parler de vous en portugais brésilien",
         "exercises": [
@@ -797,6 +815,8 @@ EXERCISE_THEMES = {
         ]
     },
     "daily_routine": {
+                "category": "grammar",  # Ajouter cette ligne pour chaque thème
+
         "title": "La routine quotidienne",
         "description": "Apprenez à parler de vos activités quotidiennes en portugais",
         "exercises": [
@@ -1200,3 +1220,23 @@ Other common -IR verbs:
         ]
     })
 ])
+THEME_CATEGORIES = {
+    "grammar": {
+        "category": "grammar",
+        "title": "Gramática",
+        "description": "Exercícios sobre as regras gramaticais do português",
+        "themes": ["verbs_present", "articles", "prepositions"]
+    },
+    "vocabulary": {
+        "category": "vocabulary",
+        "title": "Vocabulário",
+        "description": "Aprenda novas palavras e expressões em português",
+        "themes": ["food", "travel", "family"] 
+    },
+    "conversation": {
+        "category": "conversation",
+        "title": "Conversação",
+        "description": "Pratique diálogos e situações do cotidiano",
+        "themes": ["greetings", "directions", "restaurant"]
+    }
+}
