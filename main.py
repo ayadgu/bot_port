@@ -1,19 +1,16 @@
 # Changes to imports:
 import os
 import telebot
-import schedule
 import time
 import threading
 import random
 import json
-import requests
 from datetime import datetime
 from dotenv import load_dotenv
 import signal
 import sys
 from collections import OrderedDict
 from collections import defaultdict
-from bs4 import BeautifulSoup
 # Ajouter ces imports
 from gtts import gTTS
 from io import BytesIO
