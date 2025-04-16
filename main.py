@@ -19,9 +19,18 @@ from gtts import gTTS
 from io import BytesIO
 from telegram import Update
 from telegram.ext import CommandHandler, ContextTypes
+# Ajouter ces lignes au début de votre code
+import time
+from collections import defaultdict
 
 # Import courses from the separate file
 from portuguese_courses import PORTUGUESE_COURSES, PORTUGUESE_LEVELS, EXERCISE_THEMES, THEME_CATEGORIES, TEXT_TO_SPEECH_EXERCISES
+
+
+# Protection contre les abus
+message_counters = defaultdict(lambda: {"count": 0, "reset_time": time.time()})
+MAX_MESSAGES_PER_MINUTE = 10  # Ajustez selon vos besoins
+COOLDOWN_SECONDS = 60
 
 # State tracking variables remain the same
 user_theme_progress = {}
@@ -33,13 +42,37 @@ user_exercise_history = defaultdict(list)
 # Load environment variables
 load_dotenv()
 API_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
-USER_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
+# USER_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
 
 # Initialize the bot
 bot = telebot.TeleBot(API_TOKEN)
 
+
+
+def is_rate_limited(message):
+    print("is called")
+    user_id = message.from_user.id
+    current_time = time.time()
+    
+    # Réinitialiser le compteur après une minute
+    if current_time - message_counters[user_id]["reset_time"] > COOLDOWN_SECONDS:
+        message_counters[user_id] = {"count": 0, "reset_time": current_time}
+    
+    # Incrémenter le compteur
+    message_counters[user_id]["count"] += 1
+    
+    # Vérifier si la limite est dépassée
+    if message_counters[user_id]["count"] > MAX_MESSAGES_PER_MINUTE:
+        bot.send_message(message.chat.id, "Por favor, aguarde um pouco antes de enviar mais mensagens.")
+        return True
+    return False
+
 @bot.message_handler(commands=['clear'])
 def clear_command(message):
+
+    if is_rate_limited(message):
+        return
+
     """Send multiple messages to clear the chat visually"""
     # Send 5 messages with many newlines each
     for i in range(5):
@@ -358,6 +391,10 @@ initialize_theme_categories()
 # Commande pour afficher les catégories de thèmes
 @bot.message_handler(commands=['themes'])
 def themes_categories(message):
+
+    if is_rate_limited(message):
+        return
+
     chat_id = message.chat.id
     
     markup = telebot.types.InlineKeyboardMarkup()
@@ -477,6 +514,10 @@ def send_category_themes(chat_id, category_id, page=0):
 # Afficher les niveaux disponibles
 @bot.message_handler(commands=['levels'])
 def levels_command(message):
+
+    if is_rate_limited(message):
+        return
+
     chat_id = message.chat.id
     
     markup = telebot.types.InlineKeyboardMarkup()
@@ -541,6 +582,10 @@ def send_level_courses(chat_id, level_id, page=0):
 # Handle the /courses command to list available courses
 @bot.message_handler(commands=['courses'])
 def courses_command(message):
+
+    if is_rate_limited(message):
+        return
+
     chat_id = message.chat.id
     
     markup = telebot.types.InlineKeyboardMarkup()
@@ -671,6 +716,10 @@ def process_typed_answer(message, course_id):
 # Commande pour accéder aux exercices audio générés
 @bot.message_handler(commands=['audio'])
 def tts_exercises_command(message):
+
+    if is_rate_limited(message):
+        return
+
     chat_id = message.chat.id
     
     markup = telebot.types.InlineKeyboardMarkup()
@@ -685,8 +734,31 @@ def tts_exercises_command(message):
 @bot.callback_query_handler(func=lambda call: True)
 def handle_callback(call):
     chat_id = call.message.chat.id
+    message_id = call.message.message_id  # Get the message ID
     callback_data = call.data
     print(f"Received callback: {callback_data}")
+
+    # First, try to delete or edit the original message with buttons
+    try:
+        # Option 1: Delete the message with the button
+        # bot.delete_message(chat_id, message_id)
+        
+        # Option 2: Or edit it to remove buttons (often better UX)
+        bot.edit_message_reply_markup(chat_id, message_id, reply_markup=None)
+    except Exception as e:
+        print(f"Couldn't update old message: {e}")
+
+    # Now handle the callback and send a new message with buttons if needed
+    # For example, if handling theme selection:
+    if callback_data.startswith("theme_"):
+        if callback_data == "list_themes":
+            themes_categories(call.message)
+        elif callback_data.startswith("theme_answer_"):
+            answer = callback_data.replace("theme_answer_", "")
+            process_themed_answer(chat_id, answer)
+        else:
+            theme_id = callback_data.replace("theme_", "")
+            start_themed_exercises(chat_id, theme_id)
 
     # Handle "list_categories" directly
     if callback_data == "list_categories":
@@ -804,6 +876,10 @@ def handle_callback(call):
 # Modifier les messages d'accueil en portugais brésilien
 @bot.message_handler(commands=['start'])
 def start_command(message):
+
+    if is_rate_limited(message):
+        return
+
     chat_id = message.chat.id
     bot.send_message(chat_id, "Bem-vindo ao seu bot de aprendizado de português brasileiro!")
     # Send help menu immediately after start
@@ -812,6 +888,10 @@ def start_command(message):
 # Modification pour la commande help en portugais brésilien
 @bot.message_handler(commands=['help'])
 def help_command(message):
+
+    if is_rate_limited(message):
+        return
+
     help_text = """
     🤖 Comandos do Bot de Aprendizado de Português:
     
@@ -828,6 +908,10 @@ def help_command(message):
 # Handle typing exercises
 @bot.message_handler(commands=['typing'])
 def typing_command(message):
+
+    if is_rate_limited(message):
+        return
+
     chat_id = message.chat.id
     
     # Get all typing exercises from all courses
@@ -852,6 +936,10 @@ def typing_command(message):
 # Handle the /stats command
 @bot.message_handler(commands=['stats'])
 def stats_command(message):
+
+    if is_rate_limited(message):
+        return
+
     chat_id = message.chat.id
     if chat_id in user_answers:
         stats = user_answers[chat_id]
@@ -863,36 +951,31 @@ def stats_command(message):
     else:
         bot.send_message(chat_id, "Vous n'avez pas encore répondu à des exercices.")
 
-# Définir la fonction d'initialisation au démarrage
 def send_initial_help():
-    if USER_CHAT_ID:
+    # Cette fonction n'est plus nécessaire pour un bot public
+    # Si vous souhaitez envoyer un message à un admin spécifique, vous pouvez utiliser:
+    admin_id = os.getenv('TELEGRAM_ADMIN_ID')  # Optionnel, pour vos propres besoins
+    if admin_id:
         try:
-            bot.send_message(int(USER_CHAT_ID), "🤖 Bot de aprendizado de português iniciado!")
-            help_command_msg = telebot.types.Message(
-                message_id=1, 
-                from_user=telebot.types.User(id=int(USER_CHAT_ID), is_bot=False, first_name='User'),
-                date=int(time.time()),
-                chat=telebot.types.Chat(id=int(USER_CHAT_ID), type='private'),
-                content_type='text',
-                options={},
-                json_string=''
-            )
-            help_command(help_command_msg)
+            bot.send_message(int(admin_id), "🤖 Bot de aprendizado de português iniciado!")
         except Exception as e:
-            print(f"Erro ao enviar mensagem inicial: {e}")
+            print(f"Erro ao enviar mensagem ao admin: {e}")
 
 if __name__ == "__main__":
     # Signal handler for graceful shutdown
-    signal.signal(signal.SIGINT, lambda sig, frame: sys.exit(0))
-    
+    # signal.signal(signal.SIGINT, lambda sig, frame: sys.exit(0))
+
     print("Bot démarré!")
     
+    # Supprimer le webhook avant de démarrer le polling
+    bot.remove_webhook()
+    
     # Send initial help menu
-    if USER_CHAT_ID:
-        threading.Thread(target=send_initial_help).start()
+    # if USER_CHAT_ID:
+    #     threading.Thread(target=send_initial_help).start()
     
     try:
-        # Start the bot
+        # Start the bot - il répondra à tous les utilisateurs
         bot.infinity_polling(timeout=10, long_polling_timeout=5)
     except Exception as e:
         print(f"Erreur de polling du bot: {e}")
